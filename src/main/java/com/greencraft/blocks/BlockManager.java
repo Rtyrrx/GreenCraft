@@ -27,7 +27,7 @@ public class BlockManager {
     }
     //По тутору обычное удаление блока тут не подойдет, нужно чтобы удаление было по хп и каждый клик по мышке только уменьшал его хп
     public Optional<Block> getLastBlock() {
-        if (blocks.isEmpty()) return Optional.empty();
+        if(blocks.isEmpty()) return Optional.empty();
         return Optional.of(blocks.get(blocks.size() - 1));
     }
     public void replaceBlock(Block oldBlock, Block newBlock) {
@@ -36,7 +36,7 @@ public class BlockManager {
         root.getChildren().remove(oldBlock.getNode());
         root.getChildren().add(newBlock.getNode());
         int index = blocks.indexOf(oldBlock);
-        if (index != -1) {
+        if(index != -1) {
             blocks.set(index, newBlock);
         }
         EventLogger.log("Block replaced in world.");
