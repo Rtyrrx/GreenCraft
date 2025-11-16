@@ -7,7 +7,7 @@
 - **Tamerlan Yessimov** - SE-2420
 - **Ruslan Tsoy** - SE-2420
 - **Sanzhar Baiserikov** - SE-2420
-- **Madias Bek** - SE-2420
+- **Madias Bek** - SE-2430
 
 ---
 
