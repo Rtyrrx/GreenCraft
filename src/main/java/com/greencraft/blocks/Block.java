@@ -30,7 +30,7 @@ public abstract class Block {
         return currentHP;
     }
     public boolean isUnbreakable() {
-        return maxHP == -1;
+        return maxHP == -1; //тут смотрите получается, что у него бесконечно будет убывать хп. Все норма
     }
     public boolean takeDamage(int damage) {
         if(isUnbreakable() == true) {
