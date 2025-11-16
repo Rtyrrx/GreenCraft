@@ -1,11 +1,12 @@
 package com.greencraft.utils;
-
 public class EventLogger {
+    private static final Observer observer = new Observer();
     static {
-        Observer.getInstance().subscribe(message -> System.out.println("[LOG] " + message));
+        observer.subscribe(msg -> 
+            System.out.println("[LOG] " + msg)
+        );
     }
-
     public static void log(String message) {
-        Observer.getInstance().publish(message);
+        observer.publish(message);
     }
 }
