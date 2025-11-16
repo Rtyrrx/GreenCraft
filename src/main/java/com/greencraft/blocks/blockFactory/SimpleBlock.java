@@ -8,9 +8,10 @@ public class SimpleBlock extends Block {
         super(); 
         this.node = b;
         this.type = type; 
-        switch(type) {
+        switch(type) {//По возможности на --> поменяйте пж
             case GRASS:
                 this.maxHP = 50;
+                break;
             case WATER: 
                 this.maxHP = 100; 
                 break;
