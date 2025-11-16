@@ -10,9 +10,12 @@ public class DamageVisitor implements BlockVisitor {
         this.damagedBlock = block;
     }
     public boolean isBlockDestroyed() {
-        if (damagedBlock == null || damagedBlock.isUnbreakable()) {
+        if(damagedBlock == null || damagedBlock.isUnbreakable()) {
             return false;
+        } 
+        else {
+            return damagedBlock.getCurrentHP() <= 0;
         }
-        return damagedBlock.getCurrentHP() <= 0;
     }
+
 }
