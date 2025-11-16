@@ -1,5 +1,4 @@
 package com.greencraft.core;
-
 import com.greencraft.blocks.BlockType;
 import com.greencraft.blocks.GlowingBlockDecorator;
 import com.greencraft.blocks.Block;
@@ -20,13 +19,11 @@ import com.greencraft.utils.ResourceManager;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.input.KeyCode;
-
 public class GameFacade {
     private Group sceneRoot;
     private Player player;
     private BlockManager blockManager;
     private PerspectiveCamera camera;
-
     public void init(Group root) {
         this.sceneRoot = root;
         this.blockManager = new BlockManager(root);
@@ -39,41 +36,36 @@ public class GameFacade {
         root.getChildren().add(player.getNode());
         setWalkMovement();
     }
-
     public PerspectiveCamera getCamera() {
         return camera;
     }
-
     public void createGrassBlockAtPlayer() {
         BlockFactory grassFactory = new GrassFactory();
         var b = grassFactory.createBlock(BlockType.GRASS);
         blockManager.addBlockNearPlayer(player, b);
-        // Play place sound using Strategy Pattern
-        if (b.getSoundStrategy() != null) {
+        //Here we used another Strategy Pattern for sounds
+        if(b.getSoundStrategy() != null) {
             b.getSoundStrategy().playPlace();
         }
     }
-
     public void createStoneBlockAtPlayer() {
         BlockFactory stoneFactory = new StoneFactory();
         var b = stoneFactory.createBlock(BlockType.STONE);
         blockManager.addBlockNearPlayer(player, b);
-        // Play place sound using Strategy Pattern
-        if (b.getSoundStrategy() != null) {
+        //Play place sound here using Strategy Pattern
+        if(b.getSoundStrategy() != null) {
             b.getSoundStrategy().playPlace();
         }
     }
-
     public void createWaterBlockAtPlayer() {
         BlockFactory waterFactory = new WaterFactory();
         var b = waterFactory.createBlock(BlockType.WATER);
         blockManager.addBlockNearPlayer(player, b);
-        // Play place sound using Strategy Pattern
-        if (b.getSoundStrategy() != null) {
+        // Play place sound here using Strategy Pattern
+        if(b.getSoundStrategy() != null) {
             b.getSoundStrategy().playPlace();
         }
     }
-
     // Реализация того самого Strategy патерна который долго сделать не мог, и
     // понять в то же время
     public void setWalkMovement() {
@@ -82,28 +74,24 @@ public class GameFacade {
         // Play sound using Singleton ResourceManager
         ResourceManager.getInstance().playSound("movement_change.wav");
     }
-
     public void setFlyMovement() {
         player.setMovement(new FlyMovement());
         EventLogger.log("Movement set to Fly");
         // Play sound using Singleton ResourceManager
         ResourceManager.getInstance().playSound("movement_change.wav");
     }
-
     public void setSlideMovement() {
         player.setMovement(new SlideMovement());
         EventLogger.log("Movement set to Slide");
         // Play sound using Singleton ResourceManager
         ResourceManager.getInstance().playSound("movement_change.wav");
     }
-
     public void movePlayer(KeyCode key) {
         MovementStrategy m = player.getMovement();
-        if (m != null)
+        if(m != null) {
             m.moveKey(player, key);
+        }
     }
-
-    // Добавление нового функционала
     public void deleteBlockAtPlayer() {
         EventLogger.log("Player hits block (using Visitor)...");
         Optional<Block> blockOpt = blockManager.getLastBlock();
@@ -114,38 +102,38 @@ public class GameFacade {
         Block block = blockOpt.get();
         DamageVisitor damageVisitor = new DamageVisitor();
         block.accept(damageVisitor);
-        if (damageVisitor.isBlockDestroyed()) {
+        if(damageVisitor.isBlockDestroyed()) {
             blockManager.destroyBlock(block);
             // Play break sound using Strategy Pattern
-            if (block.getSoundStrategy() != null) {
+            if(block.getSoundStrategy() != null) {
                 block.getSoundStrategy().playBreak();
             }
-        } else if (!block.isUnbreakable()) {
+        } 
+        else if(!block.isUnbreakable()) {
             EventLogger.log("Block damaged. Hit again!!!");
             // Play dig sound using Strategy Pattern
-            if (block.getSoundStrategy() != null) {
+            if(block.getSoundStrategy() != null) {
                 block.getSoundStrategy().playDig();
             }
         }
     }
-
     public void makeNearestBlockGlowing() {
         Optional<Block> blockOpt = blockManager.getLastBlock();
-        if (blockOpt.isEmpty()) {
+        if(blockOpt.isEmpty()) {
             EventLogger.log("No block to toggle glow.");
             return;
         }
         Block block = blockOpt.get();
-
         // Toggle: if already glowing, remove decorator; otherwise add it
-        if (block instanceof GlowingBlockDecorator) {
+        if(block instanceof GlowingBlockDecorator) {
             EventLogger.log("Removing Glowing Decorator.");
             GlowingBlockDecorator glowingBlock = (GlowingBlockDecorator) block;
             glowingBlock.stopGlowing();
             // Get the inner block and replace
             Block innerBlock = glowingBlock.getInner();
             blockManager.replaceBlock(block, innerBlock);
-        } else {
+        } 
+        else {
             EventLogger.log("Adding Glowing Decorator.");
             GlowingBlockDecorator glowingBlock = new GlowingBlockDecorator(block);
             blockManager.replaceBlock(block, glowingBlock);
