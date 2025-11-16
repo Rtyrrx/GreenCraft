@@ -1,5 +1,4 @@
 package com.greencraft;
-
 import com.greencraft.core.GameFacade;
 import com.greencraft.utils.EventLogger;
 import com.greencraft.utils.ResourceManager;
@@ -11,30 +10,22 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.stage.Stage;
-
 public class GameApp extends Application {
     private GameFacade facade;
-
     public void start(Stage stage) {
-        // Initialize Singleton ResourceManager early
         ResourceManager.getInstance();
-
         facade = new GameFacade();
         Group root = new Group();
-
-        // Load floor texture using Singleton ResourceManager
         PhongMaterial floorMaterial = new PhongMaterial();
         javafx.scene.image.Image floorTexture = ResourceManager.getInstance().getTexture("floor.png");
-        if (floorTexture != null) {
+        if(floorTexture != null) {
             floorMaterial.setDiffuseMap(floorTexture);
-        } else {
-            // Fallback to green color if texture not found
+        } 
+        else {
             floorMaterial.setDiffuseColor(Color.rgb(100, 150, 100));
         }
-
-        // Create a larger floor grid
-        for (int x = -20; x <= 20; x++) {
-            for (int z = -20; z <= 20; z++) {
+        for(int x = -20; x <= 20; x++) {
+            for(int z = -20; z <= 20; z++) {
                 Box tile = new Box(1, 0.05, 1);
                 tile.setTranslateX(x);
                 tile.setTranslateY(4);
@@ -43,7 +34,6 @@ public class GameApp extends Application {
                 root.getChildren().add(tile);
             }
         }
-
         facade.init(root);
         PerspectiveCamera camera = facade.getCamera();
         Scene scene = new Scene(root, 900, 600, true);
@@ -51,7 +41,7 @@ public class GameApp extends Application {
         scene.setCamera(camera);
         scene.setOnKeyPressed(event -> {
             KeyCode code = event.getCode();
-            switch (code) {
+            switch(code) {
                 case DIGIT1 -> facade.createStoneBlockAtPlayer();
                 case DIGIT2 -> facade.createGrassBlockAtPlayer();
                 case DIGIT3 -> facade.createWaterBlockAtPlayer();
@@ -62,20 +52,17 @@ public class GameApp extends Application {
                 case J -> facade.setSlideMovement();
                 case W, A, S, D, SPACE, CONTROL -> facade.movePlayer(code);
                 default -> {
-                } // Ignore other keys
+                    
+                }
             }
         });
         stage.setTitle("Greencraft 3D - Patterns Demo");
         stage.setScene(scene);
         stage.show();
-
-        // Start background music using Adapter pattern
         MusicManager.getInstance().playBackgroundMusic("theme.mp3");
-
         EventLogger.log("Game started");
     }
-
-    public static void main(String[] args) {
+    public static void main(String[] poop) {
         launch();
     }
 }
