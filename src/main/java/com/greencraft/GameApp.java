@@ -68,10 +68,10 @@ public class GameApp extends Application {
         stage.setTitle("Greencraft 3D - Patterns Demo");
         stage.setScene(scene);
         stage.show();
-        
+
         // Start background music using Adapter pattern
         MusicManager.getInstance().playBackgroundMusic("theme.mp3");
-        
+
         EventLogger.log("Game started");
     }
 
